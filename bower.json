@@ -1,0 +1,13 @@
+{
+    "name": "DoomLGS",
+    "version": "0.0.1",
+    "homepage": "https://github.com/matiasbeckerle/doom-lgs",
+    "authors": [
+        "Matias Beckerle"
+    ],
+    "description": "A multiplayer Node.js light gun shooter inspired on Doom",
+    "license": "MIT",
+    "dependencies": {
+        "pixi.js": "3.0.6"
+    }
+}
