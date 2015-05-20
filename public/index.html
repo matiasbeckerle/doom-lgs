@@ -6,7 +6,19 @@
 	</head>
 	<body>
 		<h1>DoomLGS</h1>
+		<p>Players: <span id="playersQuantity">0</span></p>
+			
+		<audio id="audioFire" src="assets/audio/dsshotgn.wav"></audio>
+		
+		<!-- Lib scripts -->
 		<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+		<script src="lib/underscore/underscore-min.js"></script>
 		<script src="lib/pixi.js/bin/pixi.min.js"></script>
+		
+		<!-- Game scripts -->
+		<script src="js/ui.js"></script>
+		<script src="js/networking.js"></script>
+		<script src="js/enemy.js"></script>
+		<script src="js/game.js"></script>
 	</body>
 </html>
