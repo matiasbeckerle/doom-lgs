@@ -4,6 +4,7 @@
 	"description": "A multiplayer Node.js light gun shooter inspired on Doom",
 	"dependencies": {
 		"express": "*",
-		"socket.io": "*"
+		"socket.io": "*",
+		"underscore": "*"
 	}
 }
