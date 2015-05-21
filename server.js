@@ -37,8 +37,11 @@ io.sockets.on("connection", function(socket) {
 
     // Someone kills an enemy, just propagate without verifying anything
     socket.on("enemyHit", function (enemyId) {
-        delete gameState.enemies[enemyId];
-        io.emit("enemyKilled", enemyId);
+        // Is still alive?
+        if (gameState.enemies[enemyId]) {
+            delete gameState.enemies[enemyId];
+            io.emit("enemyKilled", enemyId);
+        }
     });
     
     // Someone goes offline
