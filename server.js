@@ -73,23 +73,24 @@ function spawnEnemy() {
     io.emit("spawnEnemy", enemyN);
 }
 
+var spawnPositions = [
+    {x: 100, y: 310},
+    {x: 200, y: 310},
+    {x: 400, y: 300},
+    {x: 500, y: 310},
+    {x: 600, y: 310},
+    {x: 700, y: 310}
+];
+
 /**
  * The EnemyN networking class that represents an Enemy in the server.
  * Used only for networking purposes.
  */
 var EnemyN = function () {
-
     var self = this;
-
-    // TODO: review
-    self.id = _.uniqueId("EnemyN-");
     
-    // TODO: create predefined spawn positions and pick one randomnly
-    self.position = {
-        x: Math.random() * 800,  // TODO: add sprite width / 2
-        y: Math.random() * 600  // TODO: add sprite height / 2
-    };
-
+    self.id = _.uniqueId("EnemyN-");
+    self.position = spawnPositions[_.random(0, spawnPositions.length)];
+    
     return self;
-
 };
