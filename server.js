@@ -22,6 +22,7 @@ app.get("/", function (req, res) {
 
 // The whole game picture
 var gameState = {
+    dirty: false,
     enemies: {},
     players: 0
 };
@@ -31,16 +32,14 @@ var clients = [];
 io.sockets.on("connection", function(socket) {
     // Add a new client
     addClient(socket);
-    
-    // Someone joined, give him the whole picture
-    io.emit("start", gameState);
 
     // Someone kills an enemy, just propagate without verifying anything
     socket.on("enemyHit", function (enemyId) {
         // Is still alive?
         if (gameState.enemies[enemyId]) {
+            addAvailableSpawnPosition(gameState.enemies[enemyId].position); // Free a not-used-anymore position
             delete gameState.enemies[enemyId];
-            io.emit("enemyKilled", enemyId);
+            gameState.dirty = true;
         }
     });
     
@@ -53,26 +52,63 @@ io.sockets.on("connection", function(socket) {
 function addClient(socket) {
     clients.push(socket);
     gameState.players++;
-    io.emit("playersChange", gameState.players);
+    gameState.dirty = true;
 }
 
 function removeClient(socket) {
     delete clients[clients.indexOf(socket)];
     gameState.players--;
-    io.emit("playersChange", gameState.players);
+    gameState.dirty = true;
 }
 
-// Game iteration
-// TODO: improve a lot...
-setInterval(spawnEnemy, 5000);
 
-// Creates a new enemy and share it to the whole world
+
+// The game...
+
+var tickState;
+var tickGame;
+
+start();
+
+/**
+ * Starts a game iteration keeping two different ticks:
+ *  - State will notify our clients about the current game state.
+ *  - Game will keep alive our game creating enemies, etc.
+ */
+function start() {
+    tickState = setInterval(updateState, 200);
+    tickGame = setInterval(updateGame, 3000);
+}
+
+/**
+ * Sends a picture of the current game state to our clients.
+ */
+function updateState() {
+    io.emit("update", gameState);
+    gameState.dirty = false;
+}
+
+/**
+ * Keeps alive our game creating enemies, etc.
+ */
+function updateGame(params) {
+    if (Object.keys(gameState.enemies).length < spawnPositions.length) {
+        spawnEnemy();
+    }
+}
+
+/**
+ * Creates a new enemy and share it to the whole world
+ */
 function spawnEnemy() {
     var enemyN = new EnemyN();
     gameState.enemies[enemyN.id] = enemyN;
-    io.emit("spawnEnemy", enemyN);
+    gameState.dirty = true;
 }
 
+/**
+ * Pre-defined spawn positions.
+ */
 var spawnPositions = [
     {x: 100, y: 310},
     {x: 200, y: 310},
@@ -81,6 +117,7 @@ var spawnPositions = [
     {x: 600, y: 310},
     {x: 700, y: 310}
 ];
+var availableSpawnPositions = _.clone(spawnPositions);
 
 /**
  * The EnemyN networking class that represents an Enemy in the server.
@@ -90,7 +127,27 @@ var EnemyN = function () {
     var self = this;
     
     self.id = _.uniqueId("EnemyN-");
-    self.position = spawnPositions[_.random(0, spawnPositions.length)];
+    self.position = getAvailableSpawnPosition();
     
     return self;
 };
+
+/**
+ * Gets a random spawn position.
+ */
+function getAvailableSpawnPosition() {
+    var index = _.random(0, availableSpawnPositions.length - 1);
+    var position = _.clone(availableSpawnPositions[index]);
+    
+    // The new position is not available anymore, remove it
+    availableSpawnPositions.splice(index, 1);
+    
+    return position;
+}
+
+/**
+ * Includes a free spawn position after enemy kill.
+ */
+function addAvailableSpawnPosition(position) {
+    availableSpawnPositions.push(position);
+}

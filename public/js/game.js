@@ -35,10 +35,20 @@ var Game = (function () {
 	// Save the current server picture
 	var updateState = function (gameState) {
 		state = gameState;
+		
+		UI.updatePlayersQuantity(state.players);
 
-		// Instantiate all the enemies already present in the game
-		for (var enemyId in state.enemies) {
-			spawnEnemy(state.enemies[enemyId]);
+		var gameStateEnemies = _.keys(state.enemies);
+		var localEnemies = _.keys(enemies);
+		var enemiesToSpawn = _.difference(gameStateEnemies, localEnemies);
+		var enemiesToKill = _.difference(localEnemies, gameStateEnemies);
+		
+		for (var i = 0; i < enemiesToKill.length; i++) {
+			killEnemy(enemiesToKill[i]);
+		}
+		
+		for (var i = 0; i < enemiesToSpawn.length; i++) {
+			spawnEnemy(state.enemies[enemiesToSpawn[i]]);
 		}
 	};
 
@@ -51,16 +61,18 @@ var Game = (function () {
 			Networking.onEnemyHit(enemy.id);
 		};
 
-		// Add it to the scene
-		scene.addChild(enemy.sprite);
-
 		// Keep a local reference
 		enemies[enemy.id] = enemy;
+
+		// Add it to the scene
+		scene.addChild(enemy.sprite);
 	};
 	
 	var killEnemy = function (enemyId) {
-		scene.removeChild(enemies[enemyId].sprite);
-		delete enemies[enemyId];
+		if(enemies[enemyId]) {
+			scene.removeChild(enemies[enemyId].sprite);
+			delete enemies[enemyId];
+		}
 	};
 	
 	function onSceneHit() {
