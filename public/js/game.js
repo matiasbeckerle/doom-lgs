@@ -59,6 +59,9 @@ var Game = (function () {
 		// Attach onHit event
 		enemy.onHit = function (event) {
 			Networking.onEnemyHit(enemy.id);
+			
+			// Local delete without lag
+			killEnemy(enemy.id);
 		};
 
 		// Keep a local reference
