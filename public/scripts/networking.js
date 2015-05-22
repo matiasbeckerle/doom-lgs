@@ -24,7 +24,7 @@ define(["io"], function (io) {
 	
 		return {
 			enemyHit: enemyHit,
-			update: function () {}
+			update: function (updatedServerSnapshot) {}
 		};
 	})();
 	
