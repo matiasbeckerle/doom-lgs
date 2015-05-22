@@ -1,4 +1,4 @@
-// Require modules
+// Required modules
 var _ = require("underscore");
 var express = require("express");
 var app = express();
@@ -15,19 +15,18 @@ http.listen(port, function () {
 
 // Provide resources
 app.use(express.static(__dirname + "/public"));
-
-// The public face
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
+// To keep track of clients
 var clients = [];
 
 io.sockets.on("connection", function (socket) {
     // Add a new client
     addClient(socket);
 
-    // Someone kills an enemy, just propagate without verifying anything
+    // Someone kills an enemy
     socket.on("enemyHit", function (enemyId) {
         gameManager.onEnemyHit(enemyId);
     });
@@ -38,16 +37,23 @@ io.sockets.on("connection", function (socket) {
     });
 });
 
+/**
+ * Adds a client in the list.
+ */
 function addClient(socket) {
     clients.push(socket);
     gameManager.addPlayer();
 }
 
+/**
+ * Removes a client from the list.
+ */
 function removeClient(socket) {
     delete clients[clients.indexOf(socket)];
     gameManager.removePlayer();
 }
 
+// Start the game and send frequent updates to the clients
 gameManager.start();
 gameManager.onUpdate = function (gameState) {
     io.emit("update", gameState);

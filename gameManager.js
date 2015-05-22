@@ -1,11 +1,12 @@
+// Required modules
 var _ = require("underscore");
 
 var GameManager = (function () {
 
-	var tickState;
-	var tickGame;
+	var tickState; // Handles updates interval with the players
+	var tickGame; // Handles the game interval
 
-	// The whole game picture
+	// The whole game snapshot
 	var state = {
 		dirty: false,
 		players: 0,
@@ -14,24 +15,34 @@ var GameManager = (function () {
 
 	/**
 	 * Starts a game iteration keeping two different ticks:
-	 *  - State will notify our clients about the current game state.
+	 *  - State will notify our players about the current game state.
 	 *  - Game will keep alive our game creating enemies, etc.
 	 */
 	var start = function () {
-		tickState = setInterval(updateState, 200);
+		tickState = setInterval(updateState, 100);
 		tickGame = setInterval(updateGame, 3000);
 	};
 
+	/**
+	 * Adds a player to the game.
+	 */
 	var addPlayer = function () {
 		state.players++;
 		state.dirty = true;
 	};
 
+	/**
+	 * Removes a player from the game.
+	 */
 	var removePlayer = function () {
 		state.players--;
 		state.dirty = true;
 	};
 
+	/**
+	 * A player has hit an enemy.
+	 * In an authoritative server this needs some kind of verification to ensure player actions are valid.
+	 */
 	var onEnemyHit = function (enemyId) {
 		// Is still alive?
         if (state.enemies[enemyId]) {
@@ -42,7 +53,7 @@ var GameManager = (function () {
 	};
 	
 	/**
-	 * Sends a picture of the current game state to our clients.
+	 * Sends a snapshot of the current game state to our players.
 	 */
 	function updateState() {
 		if (GameManager.onUpdate) {
@@ -61,7 +72,7 @@ var GameManager = (function () {
 	}
 	
 	/**
-	 * Creates a new enemy and share it to the whole world
+	 * Creates a new enemy and share it to the whole world.
 	 */
 	function spawnEnemy() {
 		var enemyN = new EnemyN();
@@ -109,7 +120,7 @@ var GameManager = (function () {
 	}
 
 	/**
-	 * Includes a free spawn position after enemy kill.
+	 * Frees a spawn position after enemy kill.
 	 */
 	function freeSpawnPosition(position) {
 		availableSpawnPositions.push(position);
