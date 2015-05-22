@@ -7,18 +7,9 @@
 	<body>
 		<h1>DoomLGS</h1>
 		<p>Players: <span id="playersQuantity">0</span></p>
-			
+		<!-- Audio assets -->
 		<audio id="audioFire" src="assets/audio/dsshotgn.wav"></audio>
-		
-		<!-- Lib scripts -->
-		<script src="lib/socket.io-client/socket.io.js"></script>
-		<script src="lib/underscore/underscore-min.js"></script>
-		<script src="lib/pixi.js/bin/pixi.min.js"></script>
-		
-		<!-- Game scripts -->
-		<script src="js/ui.js"></script>
-		<script src="js/networking.js"></script>
-		<script src="js/enemy.js"></script>
-		<script src="js/game.js"></script>
+		<!-- data-main attribute tells require.js to load scripts/main.js after require.js loads. -->
+		<script data-main="scripts/main" src="lib/requirejs/require.js"></script>
 	</body>
 </html>

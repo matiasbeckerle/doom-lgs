@@ -1,5 +1,5 @@
-var Game = (function () {
-	
+define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, UI, Networking, Enemy) {
+
 	// Audio references for playback
 	var audio = {
 		fire: document.getElementById("audioFire")
@@ -32,8 +32,10 @@ var Game = (function () {
 		animate();
 	};
 	
-	// Update the game based on the last server snapshot
-	var update = function (updatedServerSnapshot) {
+	/**
+	 * Update the game based on the last server snapshot.
+	 */
+	function update (updatedServerSnapshot) {
 		// Save the new snapshot
 		serverSnapshot = updatedServerSnapshot;
 
@@ -51,6 +53,11 @@ var Game = (function () {
 		for (var i = 0; i < enemiesToSpawn.length; i++) {
 			spawnEnemy(serverSnapshot.enemies[enemiesToSpawn[i]]);
 		}
+	}
+	
+	// Listen for updates
+	Networking.update = function (updatedServerSnapshot) {
+		update(updatedServerSnapshot);
 	};
 
 	/**
@@ -62,7 +69,7 @@ var Game = (function () {
 
 		// Attach onHit event
 		enemy.onHit = function (event) {
-			Networking.onEnemyHit(enemy.id);
+			Networking.enemyHit(enemy.id);
 			
 			// Local delete. This should be interpolated when the server sends the next snapshot.
 			killEnemy(enemy.id);
@@ -103,10 +110,7 @@ var Game = (function () {
 	}
 
 	return {
-		start: start,
-		update: update
+		start: start
 	};
 
-})();
-
-Game.start();
+});

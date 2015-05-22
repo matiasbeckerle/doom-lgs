@@ -8,6 +8,7 @@
     "description": "A multiplayer Node.js light gun shooter inspired on Doom",
     "license": "MIT",
     "dependencies": {
+        "requirejs": "2.1.17",
         "underscore": "1.8.3",
         "pixi.js": "3.0.6",
         "socket.io-client": "1.3.5"

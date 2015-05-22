@@ -1,8 +1,7 @@
 /**
  * The UI manager that handles the interactions between the game and the rendered DOM.
  */
-var UI = (function () {
-
+define([], function () {
 	var playersQuantity = document.getElementById("playersQuantity");
 
 	var updatePlayersQuantity = function (quantity) {
@@ -12,5 +11,4 @@ var UI = (function () {
 	return {
 		updatePlayersQuantity: updatePlayersQuantity
 	};
-
-})();
+});
