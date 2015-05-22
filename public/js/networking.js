@@ -1,25 +1,25 @@
-/**
- * Our socket reference
- */
+// The socket reference
 var socket = io();
 
 /**
- * The Networking manager to handle the interaction with the server.
+ * The Networking manager that handles the interaction with the server.
  */
-var Networking = (function (params) {
+var Networking = (function () {
 
 	// The server send us an update of the current game state
-	socket.on("update", function (gameState) {
+	socket.on("update", function (updatedServerSnapshot) {
 		// Check for changes
-		if(gameState.dirty) {
-			Game.updateState(gameState);
+		if(updatedServerSnapshot.dirty) {
+			Game.update(updatedServerSnapshot);
 		}
 	});
 
-	// Communicate to the server that  enemy
+	/**
+	 * Communicate to the server that an enemy has been hit.
+	 */
 	function onEnemyHit(enemyId) {
 		socket.emit("enemyHit", enemyId);
-	};
+	}
 
 	return {
 		onEnemyHit: onEnemyHit

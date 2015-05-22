@@ -1,5 +1,5 @@
 /**
- * The UI manager to handle the interactions between the game and the rendered DOM.
+ * The UI manager that handles the interactions between the game and the rendered DOM.
  */
 var UI = (function () {
 

@@ -1,6 +1,6 @@
 /**
  * The enemy used by the client side but instantiated and controlled by the server.
- * enemyN is the server reference.
+ * @param {EnemyN} enemyN The networking-related enemy object.
  */
 var Enemy = function (enemyN) {
 
@@ -28,11 +28,14 @@ var Enemy = function (enemyN) {
     self.sprite.on("mousedown", emitOnHit);
     self.sprite.on("touchstart", emitOnHit);
 
+    /**
+     * Triggers the hit event.
+     */
     function emitOnHit(event) {
         if (self.onHit) {
             self.onHit(event);
         }
-    };
+    }
 
     return self;
 
