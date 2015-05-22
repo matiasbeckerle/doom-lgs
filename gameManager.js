@@ -56,10 +56,8 @@ var GameManager = (function () {
 	 * Sends a snapshot of the current game state to our players.
 	 */
 	function updateSnapshot() {
-		if (GameManager.onUpdate) {
-			GameManager.onUpdate(snapshot);
-			snapshot.dirty = false;
-		}
+		GameManager.onUpdate(snapshot);
+		snapshot.dirty = false;
 	}
 	
 	/**
@@ -102,8 +100,6 @@ var GameManager = (function () {
 
 		self.id = _.uniqueId("EnemyN-");
 		self.position = getAvailableSpawnPosition();
-
-		return self;
 	};
 
 	/**
@@ -130,7 +126,8 @@ var GameManager = (function () {
 		addPlayer: addPlayer,
 		removePlayer: removePlayer,
 		start: start,
-		onEnemyHit: onEnemyHit
+		onEnemyHit: onEnemyHit,
+		onUpdate: function () {}
 	};
 
 })();
