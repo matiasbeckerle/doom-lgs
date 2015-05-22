@@ -3,11 +3,11 @@ var _ = require("underscore");
 
 var GameManager = (function () {
 
-	var tickState; // Handles updates interval with the players
+	var tickSnapshot; // Handles updates interval with the players
 	var tickGame; // Handles the game interval
 
 	// The whole game snapshot
-	var state = {
+	var snapshot = {
 		dirty: false,
 		players: 0,
 		enemies: {}
@@ -15,11 +15,11 @@ var GameManager = (function () {
 
 	/**
 	 * Starts a game iteration keeping two different ticks:
-	 *  - State will notify our players about the current game state.
+	 *  - Snapshot will notify our players about the current game state.
 	 *  - Game will keep alive our game creating enemies, etc.
 	 */
 	var start = function () {
-		tickState = setInterval(updateState, 100);
+		tickSnapshot = setInterval(updateSnapshot, 100);
 		tickGame = setInterval(updateGame, 3000);
 	};
 
@@ -27,16 +27,16 @@ var GameManager = (function () {
 	 * Adds a player to the game.
 	 */
 	var addPlayer = function () {
-		state.players++;
-		state.dirty = true;
+		snapshot.players++;
+		snapshot.dirty = true;
 	};
 
 	/**
 	 * Removes a player from the game.
 	 */
 	var removePlayer = function () {
-		state.players--;
-		state.dirty = true;
+		snapshot.players--;
+		snapshot.dirty = true;
 	};
 
 	/**
@@ -45,20 +45,20 @@ var GameManager = (function () {
 	 */
 	var onEnemyHit = function (enemyId) {
 		// Is still alive?
-        if (state.enemies[enemyId]) {
-            freeSpawnPosition(state.enemies[enemyId].position);
-            delete state.enemies[enemyId];
-            state.dirty = true;
+        if (snapshot.enemies[enemyId]) {
+            freeSpawnPosition(snapshot.enemies[enemyId].position);
+            delete snapshot.enemies[enemyId];
+            snapshot.dirty = true;
         }
 	};
 	
 	/**
 	 * Sends a snapshot of the current game state to our players.
 	 */
-	function updateState() {
+	function updateSnapshot() {
 		if (GameManager.onUpdate) {
-			GameManager.onUpdate(state);
-			state.dirty = false;
+			GameManager.onUpdate(snapshot);
+			snapshot.dirty = false;
 		}
 	}
 	
@@ -66,7 +66,7 @@ var GameManager = (function () {
 	 * Keeps alive our game creating enemies, etc.
 	 */
 	function updateGame() {
-		if (Object.keys(state.enemies).length < spawnPositions.length) {
+		if (Object.keys(snapshot.enemies).length < spawnPositions.length) {
 			spawnEnemy();
 		}
 	}
@@ -76,8 +76,8 @@ var GameManager = (function () {
 	 */
 	function spawnEnemy() {
 		var enemyN = new EnemyN();
-		state.enemies[enemyN.id] = enemyN;
-		state.dirty = true;
+		snapshot.enemies[enemyN.id] = enemyN;
+		snapshot.dirty = true;
 	}
 
 	/**
@@ -127,7 +127,6 @@ var GameManager = (function () {
 	}
 
 	return {
-		state: state,
 		addPlayer: addPlayer,
 		removePlayer: removePlayer,
 		start: start,

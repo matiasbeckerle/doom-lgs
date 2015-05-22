@@ -55,6 +55,6 @@ function removeClient(socket) {
 
 // Start the game and send frequent updates to the clients
 gameManager.start();
-gameManager.onUpdate = function (gameState) {
-    io.emit("update", gameState);
+gameManager.onUpdate = function (snapshot) {
+    io.emit("update", snapshot);
 };
