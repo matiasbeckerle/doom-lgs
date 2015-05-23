@@ -8,7 +8,7 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 	var background = PIXI.Sprite.fromImage("/assets/background.jpg");
 
 	var renderer = PIXI.autoDetectRenderer(800, 600, {
-		backgroundColor: 0x1099bb
+		backgroundColor: 0x000000
 	});
 	
 	// Create the root of the scene graph
@@ -26,7 +26,7 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 
 	// Where the game begins!
 	var start = function () {
-		document.body.appendChild(renderer.view);
+		document.getElementById("game").appendChild(renderer.view);
 		
 		// Start animating
 		animate();

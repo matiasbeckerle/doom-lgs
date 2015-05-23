@@ -1,6 +1,13 @@
 body {
+	width: 800px;
+	margin: 0 auto;
 	background-color: #000000;
-	color: #CCCCCC;
 	font-family: "Courier New", Courier, monospace;
 	text-align: center;
+}
+body, a {
+	color: #CCCCCC;
+}
+audio {
+	display: none;
 }
