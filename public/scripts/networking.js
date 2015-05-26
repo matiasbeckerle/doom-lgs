@@ -7,13 +7,21 @@ define(["io"], function (io) {
 		// The socket reference
 		var socket = io();
 		
+		// Flag to force an update besides dirty or not
+		var forceUpdate;
+		
 		// The server send us an update of the current game state
 		socket.on("update", function (updatedServerSnapshot) {
 			// Check for changes
-			if (updatedServerSnapshot.dirty) {
+			if (updatedServerSnapshot.dirty || forceUpdate) {
 				Networking.update(updatedServerSnapshot);
+				forceUpdate = false;
 			}
 		});
+		
+		var forceAnUpdate = function () {
+			forceUpdate = true;
+		};
 	
 		/**
 		 * Communicate to the server that an enemy has been hit.
@@ -24,6 +32,7 @@ define(["io"], function (io) {
 	
 		return {
 			enemyHit: enemyHit,
+			forceAnUpdate: forceAnUpdate,
 			update: function (updatedServerSnapshot) {}
 		};
 	})();

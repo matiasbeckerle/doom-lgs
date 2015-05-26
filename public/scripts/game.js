@@ -36,6 +36,9 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 		// Append the view
 		document.getElementById("game").appendChild(renderer.view);
 		
+		// Everything ready, force the first update
+		Networking.forceAnUpdate();
+		
 		// Listen for updates
 		Networking.update = function (updatedServerSnapshot) {
 			update(updatedServerSnapshot);
