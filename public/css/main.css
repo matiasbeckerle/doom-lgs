@@ -11,3 +11,6 @@ body, a {
 audio {
 	display: none;
 }
+#game {
+	cursor: crosshair;
+}
