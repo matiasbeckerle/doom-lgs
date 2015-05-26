@@ -82,12 +82,12 @@ var GameManager = (function () {
 	 * Pre-defined spawn positions.
 	 */
 	var spawnPositions = [
-		{ x: 100, y: 310 },
-		{ x: 200, y: 310 },
-		{ x: 400, y: 300 },
-		{ x: 500, y: 310 },
-		{ x: 600, y: 310 },
-		{ x: 700, y: 310 }
+		{ x: 35, y: 195 },
+		{ x: 105, y: 200 },
+		{ x: 200, y: 210 },
+		{ x: 410, y: 190 },
+		{ x: 500, y: 200 },
+		{ x: 605, y: 200 }
 	];
 	var availableSpawnPositions = _.clone(spawnPositions);
 

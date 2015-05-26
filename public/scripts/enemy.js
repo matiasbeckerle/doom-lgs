@@ -12,10 +12,12 @@ define([], function () {
 
         // Create a new Sprite using the texture
         self.sprite = new PIXI.Sprite(PIXI.loader.resources.soldier.texture);
+        
+        // Scale the image
+        self.sprite.scale = { x: 1.5, y: 1.5 };
     
         // Center the sprite's anchor point
-        self.sprite.anchor.x = 0.5;
-        self.sprite.anchor.y = 0.5;
+        self.sprite.anchor = { x: 0.5, y: 0.5 };
 
         // Set up position
         self.sprite.position.x = enemyN.position.x;

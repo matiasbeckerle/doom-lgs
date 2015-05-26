@@ -5,7 +5,7 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 		fire: document.getElementById("audioFire")
 	};
 
-	var renderer = PIXI.autoDetectRenderer(800, 600, {
+	var renderer = PIXI.autoDetectRenderer(640, 400, {
 		backgroundColor: 0x000000
 	});
 	
@@ -27,8 +27,8 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 	// Where the game begins!
 	var start = function () {
 		PIXI.loader
-			.add("background", "/assets/background.jpg")
-			.add("soldier", "/assets/soldier.gif")
+			.add("background", "/assets/e2m2.png")
+			.add("soldier", "/assets/enemy.png")
 			.load(onAssetsLoaded);
 	};
 
