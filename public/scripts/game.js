@@ -5,15 +5,12 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 		fire: document.getElementById("audioFire")
 	};
 
-	var background = PIXI.Sprite.fromImage("/assets/background.jpg");
-
 	var renderer = PIXI.autoDetectRenderer(800, 600, {
 		backgroundColor: 0x000000
 	});
 	
 	// Create the root of the scene graph
 	var scene = new PIXI.Container();
-	scene.addChild(background);
 	scene.interactive = true;
 	scene.on("mousedown", onSceneHit);
     scene.on("touchstart", onSceneHit);
@@ -26,16 +23,34 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 
 	// Where the game begins!
 	var start = function () {
+		PIXI.loader
+			.add("background", "/assets/background.jpg")
+			.add("soldier", "/assets/soldier.gif")
+			.load(onAssetsLoaded);
+	};
+
+	function onAssetsLoaded(loader, resources) {
+		// Add scene background
+		scene.addChild(new PIXI.Sprite(resources.background.texture));
+		
+		// Append the view
 		document.getElementById("game").appendChild(renderer.view);
 		
+		// Listen for updates
+		Networking.update = function (updatedServerSnapshot) {
+			update(updatedServerSnapshot);
+		};
+
+		UI.showGame();
+
 		// Start animating
 		animate();
-	};
+	}
 	
 	/**
 	 * Update the game based on the last server snapshot.
 	 */
-	function update (updatedServerSnapshot) {
+	function update(updatedServerSnapshot) {
 		// Save the new snapshot
 		serverSnapshot = updatedServerSnapshot;
 
@@ -54,11 +69,6 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 			spawnEnemy(serverSnapshot.enemies[enemiesToSpawn[i]]);
 		}
 	}
-	
-	// Listen for updates
-	Networking.update = function (updatedServerSnapshot) {
-		update(updatedServerSnapshot);
-	};
 
 	/**
 	 * Creates and instantiate an enemy in the scene.

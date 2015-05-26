@@ -10,11 +10,8 @@ define([], function () {
         // Keep the server reference
         self.id = enemyN.id;
 
-        // Create a texture from an image path
-        var enemyTexture = PIXI.Texture.fromImage("/assets/soldier.gif");
-	
         // Create a new Sprite using the texture
-        self.sprite = new PIXI.Sprite(enemyTexture);
+        self.sprite = new PIXI.Sprite(PIXI.loader.resources.soldier.texture);
     
         // Center the sprite's anchor point
         self.sprite.anchor.x = 0.5;

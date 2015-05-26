@@ -11,6 +11,9 @@ body, a {
 audio {
 	display: none;
 }
+.hide {
+	display: none;
+}
 #game {
 	cursor: crosshair;
 }
