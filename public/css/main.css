@@ -17,3 +17,6 @@ audio {
 #game {
 	cursor: crosshair;
 }
+#game.reloading {
+	cursor: wait;
+}

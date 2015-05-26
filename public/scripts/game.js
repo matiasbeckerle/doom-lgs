@@ -21,6 +21,9 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 	// Local reference for enemies
 	var enemies = {};
 
+	// To keep track of reloading time
+	var reloadingGun = false;
+
 	// Where the game begins!
 	var start = function () {
 		PIXI.loader
@@ -82,10 +85,12 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 
 		// Attach onHit event
 		enemy.onHit = function (event) {
-			Networking.enemyHit(enemy.id);
-			
-			// Local delete. This should be interpolated when the server sends the next snapshot.
-			killEnemy(enemy.id);
+			if(!reloadingGun) {
+				Networking.enemyHit(enemy.id);
+					
+				// Local delete. This should be interpolated when the server sends the next snapshot.
+				killEnemy(enemy.id);
+			}
 		};
 
 		// Keep a local reference
@@ -109,7 +114,16 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 	 * A player hits the scene. In this game represents shooting. 
 	 */
 	function onSceneHit() {
-		audio.fire.play();
+		if (!reloadingGun) {
+			reloadingGun = true;
+			UI.reloadingGun();
+			audio.fire.play();
+			
+			setTimeout(function () {
+				UI.gunReady();
+				reloadingGun = false;
+			}, 1000);
+		}
 	}
 
 	/**
