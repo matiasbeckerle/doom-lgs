@@ -1,5 +1,6 @@
 // Required modules
 var _ = require("underscore");
+var kolog = require("./kolog.js");
 
 var GameManager = (function () {
 
@@ -21,6 +22,7 @@ var GameManager = (function () {
 	var start = function () {
 		tickSnapshot = setInterval(updateSnapshot, 100);
 		tickGame = setInterval(updateGame, 3000);
+		kolog.info("DoomLGS multiplayer server started!");
 	};
 
 	/**

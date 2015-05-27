@@ -5,12 +5,13 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var gameManager = require("./gameManager.js");
+var kolog = require("./kolog.js");
 
 // Appropriate port number for Doom related, right?
 var port = process.env.PORT || 666;
 
 http.listen(port, function () {
-    console.log("Listening on *:" + port);
+    kolog.info("Listening on *:" + port);
 });
 
 // Provide resources
@@ -25,15 +26,18 @@ var clients = [];
 io.sockets.on("connection", function (socket) {
     // Add a new client
     addClient(socket);
+    kolog.info("A player has joinned with ID " + socket.client.id + " and UA " + socket.request.headers["user-agent"]);
 
     // Someone kills an enemy
     socket.on("enemyHit", function (enemyId) {
         gameManager.onEnemyHit(enemyId);
+        kolog.info("The player " + socket.client.id + " has killed an enemy.");
     });
     
     // Someone goes offline
     socket.on("disconnect", function () {
         removeClient(socket);
+        kolog.info("The player " + socket.client.id + " leaves the game.");
     });
 });
 
