@@ -30,6 +30,13 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 			.add("background", "/assets/e2m2.png")
 			.add("soldier", "/assets/enemy.png")
 			.load(onAssetsLoaded);
+			
+		// The game is deployed using a free Heroku account. Due to certain limitations,
+		// I have to close the connection after 10 minutes to avoid excessive consumption.
+		setTimeout(function() {
+			Networking.disconnect();
+			alert("The game is deployed using a free Heroku account. Due to certain limitations we have to close your connection. If you really want to keep playing then please reload the page.");
+		}, 600000);
 	};
 
 	function onAssetsLoaded(loader, resources) {
