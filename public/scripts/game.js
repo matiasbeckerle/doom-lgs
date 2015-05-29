@@ -32,10 +32,9 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 			.load(onAssetsLoaded);
 			
 		// The game is deployed using a free Heroku account. Due to certain limitations,
-		// I have to close the connection after 10 minutes to avoid excessive consumption.
+		// I have to remove the connection after 10 minutes to avoid excessive consumption.
 		setTimeout(function() {
-			Networking.disconnect();
-			alert("The game is deployed using a free Heroku account. Due to certain limitations we have to close your connection. If you really want to keep playing then please reload the page.");
+			location.href = "http://www.heroku.com";
 		}, 600000);
 	};
 

@@ -22,13 +22,6 @@ define(["io"], function (io) {
 		var forceAnUpdate = function () {
 			forceUpdate = true;
 		};
-		
-		/**
-		 * Closes the underlying connection.
-		 */
-		var disconnect = function () {
-			socket.disconnect();
-		};
 	
 		/**
 		 * Communicate to the server that an enemy has been hit.
@@ -40,8 +33,7 @@ define(["io"], function (io) {
 		return {
 			enemyHit: enemyHit,
 			forceAnUpdate: forceAnUpdate,
-			update: function (updatedServerSnapshot) {},
-			disconnect: disconnect
+			update: function (updatedServerSnapshot) {}
 		};
 	})();
 	
