@@ -17,6 +17,6 @@
 	},
 	"scripts": {
 		"start": "bower install && gulp",
-		"postinstall": "bower install && gulp"
+		"postinstall": "bower install; gulp"
 	}
 }
