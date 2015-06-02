@@ -54,11 +54,6 @@ gulp.task("html", ["clean", "copy"], function() {
     	.pipe(gulp.dest("./public/build"))
 });
 
-// Watch
-gulp.task("watch", function() {
-	gulp.watch("./public/**/*.*", [environment.development]);
-});
-
 // Environment tasks
 gulp.task("development", ["clean", "lint", "copy", "html"]);
 gulp.task("production", ["clean", "scripts", "copy", "html"]);
