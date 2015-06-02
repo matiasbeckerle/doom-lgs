@@ -32,9 +32,7 @@ gulp.task("lint", ["clean"], function() {
 });
 
 // Runs the r.js command
-gulp.task("scripts", ["clean"], shell.task([
-    "r.js.cmd -o public/scripts/build.js"
-]));
+gulp.task("scripts", ["clean"], shell.task([currentEnvironment == environment.production ? "r.js -o public/scripts/build.js" : "r.js.cmd -o public/scripts/build.js"]));
 
 // Copy to build directory
 gulp.task("copy", ["clean"], function(){
