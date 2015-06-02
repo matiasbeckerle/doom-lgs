@@ -16,7 +16,6 @@
 		"gulp-nodemon": "^2.0.3"
 	},
 	"scripts": {
-		"start": "bower install && gulp",
 		"postinstall": "bower install; gulp"
 	}
 }
