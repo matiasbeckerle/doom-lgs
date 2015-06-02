@@ -4,6 +4,7 @@ var clean = require("gulp-clean");
 var jshint = require("gulp-jshint");
 var shell = require("gulp-shell");
 var preprocess = require("gulp-preprocess");
+var nodemon = require("gulp-nodemon");
 
 // Environment
 var environment = {
@@ -51,10 +52,17 @@ gulp.task("copy", ["clean"], function(){
 gulp.task("html", ["clean", "copy"], function() {
 	gulp.src("./public/index.html")
     	.pipe(preprocess({context: { NODE_ENV: currentEnvironment }}))
-    	.pipe(gulp.dest("./public/build"))
+    	.pipe(gulp.dest("./public/build"));
+});
+
+// Starts node server
+gulp.task("start", ["clean", "html"], function () {
+	nodemon({
+		script: "server.js"
+	});
 });
 
 // Environment tasks
-gulp.task("development", ["clean", "lint", "copy", "html"]);
+gulp.task("development", ["clean", "lint", "copy", "html", "start"]);
 gulp.task("production", ["clean", "scripts", "copy", "html"]);
 gulp.task("default", [currentEnvironment]);
