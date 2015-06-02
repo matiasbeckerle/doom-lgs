@@ -14,7 +14,7 @@ http.listen(port, function () {
 });
 
 // Provide resources
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public/build"));
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
