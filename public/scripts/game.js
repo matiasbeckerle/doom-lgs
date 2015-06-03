@@ -77,8 +77,8 @@ define(["underscore", "pixi", "ui", "networking", "enemy"], function (_, PIXI, U
 			killEnemy(enemiesToKill[i]);
 		}
 
-		for (var i = 0; i < enemiesToSpawn.length; i++) {
-			spawnEnemy(serverSnapshot.enemies[enemiesToSpawn[i]]);
+		for (var j = 0; j < enemiesToSpawn.length; j++) {
+			spawnEnemy(serverSnapshot.enemies[enemiesToSpawn[j]]);
 		}
 	}
 

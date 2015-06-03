@@ -21,7 +21,12 @@
 
 		<!-- Audio assets -->
 		<audio id="audioFire" src="assets/audio/dsshotgn.wav"></audio>
-		<!-- data-main attribute tells require.js to load scripts/main.js after require.js loads. -->
+		
+		<!-- @if NODE_ENV='production' -->
+		<script data-main="main-built" src="lib/requirejs/require.js"></script>
+		<!-- @endif -->
+		<!-- @if NODE_ENV!='production' -->
 		<script data-main="scripts/main" src="lib/requirejs/require.js"></script>
+		<!-- @endif -->
 	</body>
 </html>
