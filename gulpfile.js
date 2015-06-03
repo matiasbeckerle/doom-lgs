@@ -5,6 +5,7 @@ var jshint = require("gulp-jshint");
 var shell = require("gulp-shell");
 var preprocess = require("gulp-preprocess");
 var nodemon = require("gulp-nodemon");
+var runSequence = require("run-sequence");
 
 // Environment
 var environment = {
@@ -15,31 +16,15 @@ var currentEnvironment = process.env.NODE_ENV === environment.production ? envir
 
 // Clean
 gulp.task("clean", function () {
-    return gulp.src("./public/build", {read: false})
+    return gulp.src("./public/build", { read: false })
         .pipe(clean());
 });
 
-// Lint
-gulp.task("lint", ["clean"], function() {
-	return gulp.src([
-			"./server.js",
-			"./gameManager.js",
-			"./public/scripts/**/*.js",
-			"!./public/scripts/build.js",
-			"!./public/build/main-built.js",
-		])
-		.pipe(jshint())
-		.pipe(jshint.reporter("default"));
-});
-
-// Runs the r.js command
-gulp.task("scripts", ["clean"], shell.task([currentEnvironment == environment.production ? "r.js -o public/scripts/build.js" : "r.js.cmd -o public/scripts/build.js"]));
-
 // Copy to build directory
-gulp.task("copy", ["clean"], function(){
+gulp.task("copy", function () {
 	gulp.src(["./public/assets/**/*.*"]).pipe(gulp.dest("./public/build/assets"));
 	gulp.src(["./public/css/**/*.*"]).pipe(gulp.dest("./public/build/css"));
-	
+
 	if (currentEnvironment != environment.production) {
 		gulp.src(["./public/lib/**/*.*"]).pipe(gulp.dest("./public/build/lib"));
 		gulp.src(["./public/scripts/**/*.*"]).pipe(gulp.dest("./public/build/scripts"));
@@ -48,21 +33,60 @@ gulp.task("copy", ["clean"], function(){
 	}
 });
 
+// Runs the r.js command
+gulp.task("scripts", shell.task([currentEnvironment == environment.production ? "r.js -o public/scripts/build.js" : "r.js.cmd -o public/scripts/build.js"]));
+
 // HTML preprocessor
-gulp.task("html", ["clean", "copy"], function() {
+gulp.task("html", function () {
 	gulp.src("./public/index.html")
-    	.pipe(preprocess({context: { NODE_ENV: currentEnvironment }}))
-    	.pipe(gulp.dest("./public/build"));
+		.pipe(preprocess({ context: { NODE_ENV: currentEnvironment } }))
+		.pipe(gulp.dest("./public/build"));
 });
 
 // Starts node server
-gulp.task("start", ["clean", "html"], function () {
+gulp.task("server", function () {
 	nodemon({
-		script: "server.js"
+		script: "server.js",
+		watch: [
+			"server.js",
+			"gameManager.js"
+		],
+		ignore: [
+			"public/**/*.*"
+		]
 	});
 });
 
+// Watch
+gulp.task("watch", function () {
+	gulp.watch([
+		"./server.js",
+		"./gameManager.js",
+		"./public/**/*.*",
+		"!./public/build/**/*.*"
+	], function () {
+		runSequence("copy", "html", "lint");
+	});
+});
+
+// Lint
+gulp.task("lint", function () {
+	return gulp.src([
+		"./server.js",
+		"./gameManager.js",
+		"./public/scripts/**/*.js",
+		"!./public/scripts/build.js",
+		"!./public/build/main-built.js",
+	])
+	.pipe(jshint())
+	.pipe(jshint.reporter("default"));
+});
+
 // Environment tasks
-gulp.task("development", ["clean", "lint", "copy", "html", "start"]);
-gulp.task("production", ["clean", "scripts", "copy", "html"]);
+gulp.task("development", function () {
+	runSequence("clean", "copy", "html", ["server", "watch"]);
+});
+gulp.task("production", function () {
+	runSequence("clean", "copy", "scripts", "html");
+});
 gulp.task("default", [currentEnvironment]);
