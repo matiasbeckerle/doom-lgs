@@ -6,6 +6,7 @@ var shell = require("gulp-shell");
 var preprocess = require("gulp-preprocess");
 var nodemon = require("gulp-nodemon");
 var runSequence = require("run-sequence");
+var mocha = require("gulp-mocha");
 
 // Environment
 var environment = {
@@ -52,7 +53,8 @@ gulp.task("server", function () {
 			"gameManager.js"
 		],
 		ignore: [
-			"public/**/*.*"
+			"public/**/*.*",
+			"test/**/*.*",
 		]
 	});
 });
@@ -62,10 +64,11 @@ gulp.task("watch", function () {
 	gulp.watch([
 		"./server.js",
 		"./gameManager.js",
+		"./test/**/*.*",
 		"./public/**/*.*",
 		"!./public/build/**/*.*"
 	], function () {
-		runSequence("copy", "html", "lint");
+		runSequence("copy", "html", "lint", "test");
 	});
 });
 
@@ -80,6 +83,12 @@ gulp.task("lint", function () {
 	])
 	.pipe(jshint())
 	.pipe(jshint.reporter("default"));
+});
+
+// Tests with mocha
+gulp.task("test", function () {
+	gulp.src("./test/**/*.js")
+		.pipe(mocha());
 });
 
 // Environment tasks

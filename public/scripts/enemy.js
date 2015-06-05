@@ -1,4 +1,4 @@
-define([], function () { 
+define(["pixi"], function (PIXI) { 
     /**
       * The enemy used by the client side but instantiated and controlled by the server.
       * @param {EnemyN} enemyN The networking-related enemy object.

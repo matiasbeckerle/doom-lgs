@@ -3,15 +3,9 @@ var _ = require("underscore");
 
 var GameManager = (function () {
 
+	var snapshot; // The whole game snapshot
 	var tickSnapshot; // Handles updates interval with the players
 	var tickGame; // Handles the game interval
-
-	// The whole game snapshot
-	var snapshot = {
-		dirty: false,
-		players: 0,
-		enemies: {}
-	};
 
 	/**
 	 * Starts a game iteration keeping two different ticks:
@@ -19,6 +13,11 @@ var GameManager = (function () {
 	 *  - Game will keep alive our game creating enemies, etc.
 	 */
 	var start = function () {
+		snapshot = {
+			dirty: false,
+			players: 0,
+			enemies: {}
+		};
 		tickSnapshot = setInterval(updateSnapshot, 100);
 		tickGame = setInterval(updateGame, 3000);
 	};
@@ -51,12 +50,20 @@ var GameManager = (function () {
             snapshot.dirty = true;
         }
 	};
+
+	/**
+	 * Gets a copy of the current snapshot.
+	 * @return {Snapshot} The snapshot.
+	 */
+	var getCurrentSnapshot = function () {
+		return JSON.parse(JSON.stringify(snapshot));
+	};
 	
 	/**
 	 * Sends a snapshot of the current game state to our players.
 	 */
 	function updateSnapshot() {
-		GameManager.onUpdate(snapshot);
+		GameManager.onUpdate(getCurrentSnapshot());
 		snapshot.dirty = false;
 	}
 	
@@ -125,9 +132,10 @@ var GameManager = (function () {
 	return {
 		addPlayer: addPlayer,
 		removePlayer: removePlayer,
+		getCurrentSnapshot: getCurrentSnapshot,
 		start: start,
 		onEnemyHit: onEnemyHit,
-		onUpdate: function () {}
+		onUpdate: function () { }
 	};
 
 })();
