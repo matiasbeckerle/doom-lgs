@@ -53,7 +53,8 @@ gulp.task("server", function () {
 			"gameManager.js"
 		],
 		ignore: [
-			"public/**/*.*"
+			"public/**/*.*",
+			"test/**/*.*",
 		]
 	});
 });
@@ -63,6 +64,7 @@ gulp.task("watch", function () {
 	gulp.watch([
 		"./server.js",
 		"./gameManager.js",
+		"./test/**/*.*",
 		"./public/**/*.*",
 		"!./public/build/**/*.*"
 	], function () {
@@ -83,6 +85,7 @@ gulp.task("lint", function () {
 	.pipe(jshint.reporter("default"));
 });
 
+// Tests with mocha
 gulp.task("test", function () {
 	gulp.src("./test/**/*.js")
 		.pipe(mocha());
