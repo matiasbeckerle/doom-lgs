@@ -4,6 +4,7 @@ var express = require("express");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
+var pathManager = require("./pathManager.js");
 var gameManager = require("./gameManager.js");
 
 // Appropriate port number for Doom related, right?
@@ -14,9 +15,9 @@ http.listen(port, function () {
 });
 
 // Provide resources
-app.use(express.static(__dirname + "/public/build"));
+app.use(express.static(pathManager.PUBLIC_BUILD));
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+    res.sendFile(pathManager.PUBLIC_BUILD + "/index.html");
 });
 
 // To keep track of clients
