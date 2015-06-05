@@ -4,14 +4,12 @@ var express = require("express");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
+var config = require("./config.js");
 var pathManager = require("./pathManager.js");
 var gameManager = require("./gameManager.js");
 
-// Appropriate port number for Doom related, right?
-var port = process.env.PORT || 666;
-
-http.listen(port, function () {
-    console.log("Listening on *:" + port);
+http.listen(config.port, function () {
+    console.log("Listening on *:" + config.port);
 });
 
 // Provide resources

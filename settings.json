@@ -1,0 +1,8 @@
+{
+	"development": {
+		"requirejsCommand": "r.js.cmd"
+	}, 
+	"production": {
+		"requirejsCommand": "r.js"
+	}
+}
