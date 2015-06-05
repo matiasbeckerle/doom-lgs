@@ -15,9 +15,9 @@
 		"gulp-clean": "^0.3.1",
 		"gulp-nodemon": "^2.0.3",
 		"run-sequence": "^1.1.0",
-		"mocha": "^2.2.5",
 		"chai": "^2.3.0",
-		"gulp-mocha": "^2.1.0"
+		"gulp-mocha": "^2.1.0",
+		"squirejs": "^0.2.1"
 	},
 	"scripts": {
 		"postinstall": "bower install; gulp"
