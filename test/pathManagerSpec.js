@@ -10,6 +10,13 @@ describe("PathManager", function () {
 		});
 	});
 	
+	describe("SERVER", function () {
+		it("should be the path for 'server' directory", function () {
+			// Assert
+			expect(pathManager.SERVER).to.equal("./server");
+		});
+	});
+	
 	describe("PUBLIC", function () {
 		it("should be the path for 'public' directory", function () {
 			// Assert
