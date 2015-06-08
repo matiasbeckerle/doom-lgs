@@ -44,7 +44,8 @@ gulp.task("server", function () {
 	nodemon({
 		script: pathManager.BASE + "/server.js",
 		watch: [
-			pathManager.BASE + "/*.js"
+			pathManager.BASE + "/*.js",
+			pathManager.SERVER + "/*.js"
 		],
 		ignore: [
 			pathManager.PUBLIC + "/**/*.*",
@@ -57,6 +58,7 @@ gulp.task("server", function () {
 gulp.task("watch", function () {
 	gulp.watch([
 		pathManager.BASE + "/*.js",
+		pathManager.SERVER + "/*.js",
 		pathManager.TEST + "/**/*.js",
 		pathManager.PUBLIC + "/**/*.*",
 		"!" + pathManager.PUBLIC_BUILD + "/**/*.*"
@@ -69,6 +71,7 @@ gulp.task("watch", function () {
 gulp.task("lint", function () {
 	return gulp.src([
 		pathManager.BASE + "/*.js",
+		pathManager.SERVER + "/*.js",
 		pathManager.PUBLIC_SCRIPTS + "/**/*.js",
 		"!" + pathManager.PUBLIC_SCRIPTS + "/build.js",
 		"!" + pathManager.PUBLIC_BUILD + "/main-built.js",
