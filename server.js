@@ -3,11 +3,12 @@ var _ = require("underscore");
 var express = require("express");
 var app = express();
 var http = require("http").Server(app);
-var io = require("socket.io")(http);
 var config = require("./config.js");
 var pathManager = require("./server/pathManager.js");
 var gameManager = require("./server/gameManager.js");
+var socketManager = require("./server/socketManager.js");
 
+// Listening clients
 http.listen(config.port, function () {
     console.log("Listening on *:" + config.port);
 });
@@ -18,42 +19,20 @@ app.get("/", function (req, res) {
     res.sendFile(pathManager.PUBLIC_BUILD + "/index.html");
 });
 
-// To keep track of clients
-var clients = [];
+// Start listening with socket io
+socketManager.listen(http);
 
-io.sockets.on("connection", function (socket) {
-    // Add a new client
-    addClient(socket);
-
-    // Someone kills an enemy
-    socket.on("enemyHit", function (enemyId) {
-        gameManager.onEnemyHit(enemyId);
-    });
-    
-    // Someone goes offline
-    socket.on("disconnect", function () {
-        removeClient(socket);
-    });
-});
-
-/**
- * Adds a client in the list.
- */
-function addClient(socket) {
-    clients.push(socket);
-    gameManager.addPlayer();
-}
-
-/**
- * Removes a client from the list.
- */
-function removeClient(socket) {
-    delete clients[clients.indexOf(socket)];
-    gameManager.removePlayer();
-}
-
-// Start the game and send frequent updates to the clients
+// Initialize game and attach callbacks
 gameManager.start();
 gameManager.onUpdate = function (snapshot) {
-    io.emit("update", snapshot);
+    socketManager.sendUpdate(snapshot);
+};
+socketManager.onAddClient = function () {
+    gameManager.addPlayer();
+};
+socketManager.onRemoveClient = function () {
+    gameManager.removePlayer();
+};
+socketManager.onEnemyHit = function (enemyId) {
+    gameManager.onEnemyHit(enemyId);
 };
