@@ -5,8 +5,8 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var config = require("./config.js");
-var pathManager = require("./pathManager.js");
-var gameManager = require("./gameManager.js");
+var pathManager = require("./server/pathManager.js");
+var gameManager = require("./server/gameManager.js");
 
 http.listen(config.port, function () {
     console.log("Listening on *:" + config.port);

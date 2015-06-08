@@ -1,6 +1,6 @@
 // Dependencies
 var config = require("./config.js");
-var pathManager = require("./pathManager.js");
+var pathManager = require("./server/pathManager.js");
 var gulp = require("gulp");
 var clean = require("gulp-clean");
 var jshint = require("gulp-jshint");
