@@ -1,5 +1,5 @@
 var expect = require("chai").expect;
-var pathManager = require("../pathManager.js");
+var pathManager = require("../server/pathManager.js");
 
 describe("PathManager", function () {
 	
@@ -7,6 +7,13 @@ describe("PathManager", function () {
 		it("should be the path for root directory", function () {
 			// Assert
 			expect(pathManager.BASE).to.equal(".");
+		});
+	});
+	
+	describe("SERVER", function () {
+		it("should be the path for 'server' directory", function () {
+			// Assert
+			expect(pathManager.SERVER).to.equal("./server");
 		});
 	});
 	

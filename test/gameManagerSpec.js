@@ -1,5 +1,5 @@
 var expect = require("chai").expect;
-var gameManager = require("../gameManager.js");
+var gameManager = require("../server/gameManager.js");
 
 describe("GameManager", function () {
 
