@@ -34,5 +34,5 @@ socketManager.onRemoveClient = function () {
     gameManager.removePlayer();
 };
 socketManager.onEnemyHit = function (enemyId) {
-    gameManager.onEnemyHit(enemyId);
+    gameManager.hitsEnemy(enemyId);
 };

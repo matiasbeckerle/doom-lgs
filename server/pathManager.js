@@ -1,20 +1,18 @@
 var PathManager = (function () {
 	
-	var self = this;
-	
-	self.BASE = ".";
-	self.PUBLIC = self.BASE + "/public";
+	var BASE = ".";
+	var PUBLIC = BASE + "/public";
 	
 	return {
-		BASE: self.BASE,
-		SERVER: self.BASE + "/server",
-		PUBLIC: self.PUBLIC,
-		PUBLIC_ASSETS: self.PUBLIC + "/assets",
-		PUBLIC_BUILD: self.PUBLIC + "/build",
-		PUBLIC_CSS: self.PUBLIC + "/css",
-		PUBLIC_LIB: self.PUBLIC + "/lib",
-		PUBLIC_SCRIPTS: self.PUBLIC + "/scripts",
-		TEST: self.BASE + "/test"
+		BASE: BASE,
+		SERVER: BASE + "/server",
+		PUBLIC: PUBLIC,
+		PUBLIC_ASSETS: PUBLIC + "/assets",
+		PUBLIC_BUILD: PUBLIC + "/build",
+		PUBLIC_CSS: PUBLIC + "/css",
+		PUBLIC_LIB: PUBLIC + "/lib",
+		PUBLIC_SCRIPTS: PUBLIC + "/scripts",
+		TEST: BASE + "/test"
 	};
 	
 })();
