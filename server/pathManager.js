@@ -7,6 +7,7 @@ var PathManager = (function () {
 	
 	return {
 		BASE: self.BASE,
+		SERVER: self.BASE + "/server",
 		PUBLIC: self.PUBLIC,
 		PUBLIC_ASSETS: self.PUBLIC + "/assets",
 		PUBLIC_BUILD: self.PUBLIC + "/build",
