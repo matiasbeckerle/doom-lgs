@@ -42,7 +42,7 @@ var GameManager = (function () {
 	 * A player has hit an enemy.
 	 * In an authoritative server this needs some kind of verification to ensure player actions are valid.
 	 */
-	var onEnemyHit = function (enemyId) {
+	var hitsEnemy = function (enemyId) {
 		// Is still alive?
         if (snapshot.enemies[enemyId]) {
             freeSpawnPosition(snapshot.enemies[enemyId].position);
@@ -134,7 +134,7 @@ var GameManager = (function () {
 		removePlayer: removePlayer,
 		getCurrentSnapshot: getCurrentSnapshot,
 		start: start,
-		onEnemyHit: onEnemyHit,
+		hitsEnemy: hitsEnemy,
 		onUpdate: function (snapshot) { }
 	};
 
