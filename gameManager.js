@@ -135,7 +135,7 @@ var GameManager = (function () {
 		getCurrentSnapshot: getCurrentSnapshot,
 		start: start,
 		onEnemyHit: onEnemyHit,
-		onUpdate: function () { }
+		onUpdate: function (snapshot) { }
 	};
 
 })();
