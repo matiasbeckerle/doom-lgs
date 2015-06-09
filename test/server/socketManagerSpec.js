@@ -5,7 +5,7 @@ var expect = chai.expect;
 chai.use(sinonChai);
 
 var socketio = require("socket.io");
-var socketManager = require("../server/socketManager.js");
+var socketManager = require("../../server/socketManager.js");
 
 describe("SocketManager", function () {
 
