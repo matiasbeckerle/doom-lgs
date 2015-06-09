@@ -17,7 +17,9 @@
 		"run-sequence": "^1.1.0",
 		"chai": "^2.3.0",
 		"gulp-mocha": "^2.1.0",
-		"squirejs": "^0.2.1"
+		"squirejs": "^0.2.1",
+		"sinon": "^1.14.1",
+		"sinon-chai": "^2.8.0"
 	},
 	"scripts": {
 		"postinstall": "bower install; gulp"
