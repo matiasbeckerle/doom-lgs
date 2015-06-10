@@ -83,7 +83,10 @@ gulp.task("lint", function () {
 // Tests with mocha
 gulp.task("test", function () {
 	gulp.src(pathManager.TEST + "/**/*.js")
-		.pipe(mocha());
+		.pipe(mocha())
+		.on("error", function(err){
+			console.log(err.toString());
+		});
 });
 
 // Environment tasks
