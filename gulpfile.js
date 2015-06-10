@@ -2,22 +2,20 @@
 var config = require("./config.js");
 var pathManager = require("./server/pathManager.js");
 var gulp = require("gulp");
-var clean = require("gulp-clean");
+var del = require("del");
 var jshint = require("gulp-jshint");
 var shell = require("gulp-shell");
 var preprocess = require("gulp-preprocess");
 var nodemon = require("gulp-nodemon");
-var runSequence = require("run-sequence");
 var mocha = require("gulp-mocha");
 
 // Clean
-gulp.task("clean", function () {
-    return gulp.src(pathManager.PUBLIC_BUILD, { read: false })
-        .pipe(clean());
+gulp.task("clean", function (cb) {
+	del([pathManager.PUBLIC_BUILD], cb);
 });
 
 // Copy to build directory
-gulp.task("copy", function () {
+gulp.task("copy", ["clean"], function () {
 	gulp.src([pathManager.PUBLIC_ASSETS + "/**/*.*"]).pipe(gulp.dest(pathManager.PUBLIC_BUILD + "/assets"));
 	gulp.src([pathManager.PUBLIC_CSS + "/**/*.*"]).pipe(gulp.dest(pathManager.PUBLIC_BUILD + "/css"));
 
@@ -30,10 +28,10 @@ gulp.task("copy", function () {
 });
 
 // Runs the r.js command
-gulp.task("scripts", shell.task(config.requirejsCommand + " -o public/scripts/build.js"));
+gulp.task("scripts", ["clean"], shell.task(config.requirejsCommand + " -o public/scripts/build.js"));
 
 // HTML preprocessor
-gulp.task("html", function () {
+gulp.task("html", ["clean"], function () {
 	gulp.src(pathManager.PUBLIC + "/index.html")
 		.pipe(preprocess({ context: { NODE_ENV: config.env } }))
 		.pipe(gulp.dest(pathManager.PUBLIC_BUILD));
@@ -56,15 +54,19 @@ gulp.task("server", function () {
 
 // Watch
 gulp.task("watch", function () {
+	// Public side
+	gulp.watch([
+		pathManager.TEST + "/public/**/*.js",
+		pathManager.PUBLIC + "/**/*.*",
+		"!" + pathManager.PUBLIC_BUILD + "/**/*.*"
+	], ["copy", "html", "lint", "test"]);
+	
+	// Server side
 	gulp.watch([
 		pathManager.BASE + "/*.js",
 		pathManager.SERVER + "/*.js",
-		pathManager.TEST + "/**/*.js",
-		pathManager.PUBLIC + "/**/*.*",
-		"!" + pathManager.PUBLIC_BUILD + "/**/*.*"
-	], function () {
-		runSequence("copy", "html", "lint", "test");
-	});
+		pathManager.TEST + "/server/**/*.js"
+	], ["server", "lint", "test"]);
 });
 
 // Lint
@@ -90,10 +92,6 @@ gulp.task("test", function () {
 });
 
 // Environment tasks
-gulp.task("development", function () {
-	runSequence("clean", "copy", "html", ["server", "watch"]);
-});
-gulp.task("production", function () {
-	runSequence("clean", "copy", "scripts", "html");
-});
+gulp.task("development", ["watch", "copy", "html", "lint", "test", "server"]);
+gulp.task("production", ["copy", "scripts", "html"]);
 gulp.task("default", [config.env]);
