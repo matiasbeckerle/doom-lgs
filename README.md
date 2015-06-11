@@ -197,9 +197,21 @@ function enemyHit(enemyId) {
 
 ## Networking
 
+Shared data between server and clients needs to be minimal. In order to achieve that goal I've created a networking `EnemyN` class to provide basic information about each enemy instance. Clients takes that basic `EnemyN` information and creates their own instances with more complex stuff like the sprite information. In this game minimal data consists only in: `position` and `id`.
+
+## Build
+
+To build and run this game you will need to install [Node.js](https://nodejs.org/download/) and [Gulp](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md). Once the two are finished you only have to run the following command:
+
+`$ gulp`
+
 ## Task runner
 
+Automating was done through [Gulp](http://gulpjs.com) because I wanted to learn about it. Yes, this projects has a lot of wanted-to-learn technologies and tools. Tasks are defined in `gulpfile.js` at root.
+
 ## Testing
+
+You don't want to take this as an example. The project started without testing in mind so it isn't so strong in that regarding. Anyways, there are some tests inside `/test` folder and runs thanks to [Mocha](http://mochajs.org), [Chai](http://chaijs.com) and [Sinon](http://sinonjs.org).
 
 ## Disclaimer
 
