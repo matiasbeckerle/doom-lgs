@@ -1,5 +1,5 @@
 var expect = require("chai").expect;
-var pathManager = require("../server/pathManager.js");
+var pathManager = require("../../server/pathManager.js");
 
 describe("PathManager", function () {
 	
