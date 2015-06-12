@@ -1,6 +1,6 @@
 {
 	"name": "DoomLGS",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "A multiplayer Node.js light gun shooter inspired on Doom",
 	"dependencies": {
 		"express": "4.12.4",
